@@ -9,6 +9,7 @@ import cors from "cors";
 import helmet from "helmet";
 import colors from "colors";
 import { dbConnect } from "./config/db.js";
+import User from "./models/user/user.js";
 
 const app = express();
 const { NODE_ENV, PORT } = process.env;
@@ -24,6 +25,23 @@ app.get("/", (req, res) => {
   res.status(httpStatus.OK).json({
     status: "success",
     message: "Welcome to Node Expense Tracker server",
+  });
+});
+
+app.post("/users", async (req, res) => {
+  //collect the data from req body
+  const data = req.body;
+
+  //import the db model and create the user
+  const createdUser = await User.create({
+    username: data.username,
+    password: data.password,
+    email: data.email,
+  });
+
+  res.status(httpStatus.CREATED).json({
+    status: "success",
+    data: createdUser,
   });
 });
 
