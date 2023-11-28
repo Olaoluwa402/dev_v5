@@ -1,11 +1,11 @@
 import express from "express";
+const router = express.Router();
+import { validationMiddleware } from "../middleware/validation.js";
 import {
   createUserSchema,
   loginUserSchema,
   getUserSchema,
 } from "../controllers/user/userSchema.js";
-import { validationMiddleware } from "../middleware/validation.js";
-const router = express.Router();
 import {
   createUser,
   loginUser,
@@ -25,4 +25,5 @@ router
   .get(validationMiddleware(getUserSchema, "QUERY"), getUser)
   .patch(updateUser)
   .delete(deleteUser);
+
 export default router;
