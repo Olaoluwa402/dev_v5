@@ -1,23 +1,29 @@
 import express from "express";
-<<<<<<< HEAD
+const router = express.Router();
+import { validationMiddleware } from "../middleware/validation.js";
 import {
   createUserSchema,
   loginUserSchema,
+  getUserSchema,
 } from "../controllers/user/userSchema.js";
-import { validationMiddleware } from "../middleware/validation.js";
-=======
-import { createUserSchema } from "../controllers/user/userSchema.js";
-import { validationMiddleware } from "../../middleware/validation.js";
->>>>>>> ac8a96bbb62fd1aa41c751915566d84a5948a407
-const router = express.Router();
-import { createUser, loginUser } from "../controllers/user/user.js";
+import {
+  createUser,
+  loginUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+} from "../controllers/user/user.js";
 
-router.route("/").post(validationMiddleware(createUserSchema), createUser);
-<<<<<<< HEAD
+router
+  .route("/")
+  .get(getUsers)
+  .post(validationMiddleware(createUserSchema), createUser);
 router.route("/login").post(validationMiddleware(loginUserSchema), loginUser);
-// router.route("/:id").get(getUser)
-=======
-router.route("/login").post(loginUser);
+router
+  .route("/:id")
+  .get(validationMiddleware(getUserSchema, "QUERY"), getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
->>>>>>> ac8a96bbb62fd1aa41c751915566d84a5948a407
 export default router;

@@ -74,4 +74,127 @@ const loginUser = async (req, res) => {
   });
 };
 
-export { createUser, loginUser };
+const getUsers = async (req, res) => {
+  const users = await User.find({});
+  res.status(httpStatus.OK).json({
+    status: "success",
+    data: users,
+  });
+};
+
+const getUser = async (req, res) => {
+  const id = req.params.id;
+  const type = req.query.type;
+  const email = req.query.email;
+  const username = req.query.username;
+
+  console.log(type, email, "type");
+
+  let user;
+  switch (type) {
+    case "ID":
+      user = await User.findById(id);
+      if (!user) {
+        res.status(httpStatus.NOT_FOUND).json({
+          status: "error",
+          message: "User ith id not found",
+        });
+        break;
+      }
+
+      res.status(httpStatus.OK).json({
+        status: "success",
+        data: user,
+      });
+      break;
+
+    case "EMAIL":
+      user = await User.findOne({ email: email });
+      if (!user) {
+        res.status(httpStatus.NOT_FOUND).json({
+          status: "error",
+          message: "User with email not found",
+        });
+        break;
+      }
+
+      res.status(httpStatus.OK).json({
+        status: "success",
+        data: user,
+      });
+      break;
+
+    case "USERNAME":
+      user = await User.findOne({ username: username });
+      if (!user) {
+        res.status(httpStatus.NOT_FOUND).json({
+          status: "error",
+          message: "User with username not found",
+        });
+        break;
+      }
+
+      res.status(httpStatus.OK).json({
+        status: "success",
+        data: user,
+      });
+      break;
+
+    default:
+      res.status(httpStatus.NOT_FOUND).json({
+        status: "error",
+        message: "User not found",
+      });
+  }
+};
+
+const updateUser = async (req, res) => {
+  const { email, password } = req.body;
+  const { id } = req.params;
+  const foundUser = await User.findOne({ _id: id });
+  if (!foundUser) {
+    res.status(httpStatus.NOT_FOUND).json({
+      status: "error",
+      message: "User not found",
+    });
+  }
+
+  const emailExist = await User.findOne({ email: email });
+  if (emailExist) {
+    res.status(httpStatus.NOT_FOUND).json({
+      status: "error",
+      message: "User with email already exist. Pls provide a unique email",
+    });
+    return;
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { email: email, password: password },
+    { new: true }
+  );
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    data: updatedUser,
+  });
+};
+
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  const foundUser = await User.findOne({ _id: id });
+  if (!foundUser) {
+    res.status(httpStatus.NOT_FOUND).json({
+      status: "error",
+      message: "User not found",
+    });
+  }
+
+  await User.findByIdAndDelete(id);
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    data: `User with ID ${id} is deleted`,
+  });
+};
+
+export { createUser, loginUser, getUsers, getUser, updateUser, deleteUser };
