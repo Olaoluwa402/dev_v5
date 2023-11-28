@@ -6,6 +6,30 @@ const createUser = async (req, res) => {
   const data = req.body;
 
   //import the db model and create the user
+  //User.findOne({_id:req.params.id})
+  //User.findById(req.params.id)
+  const emailExist = await User.findOne({
+    email: data.email,
+  });
+  if (emailExist) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      status: "error",
+      message: "User with email already exist",
+    });
+    return;
+  }
+
+  const usernameExist = await User.findOne({
+    username: data.username,
+  });
+  if (usernameExist) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      status: "error",
+      message: "User with yusername already exist",
+    });
+    return;
+  }
+
   const createdUser = await User.create({
     username: data.username,
     password: data.password,

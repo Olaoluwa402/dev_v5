@@ -8,6 +8,12 @@ export const validationMiddleware = (schema, type) => {
       allowStripe: true,
     };
     try {
+      if (type == "QUERY") {
+        const value = await schema.validateAsync(req.query, valitionOptions);
+        req.query = value;
+        next();
+        return;
+      }
       const value = await schema.validateAsync(req.body, valitionOptions);
       req.body = value;
       next();
