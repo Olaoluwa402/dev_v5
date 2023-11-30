@@ -1,5 +1,7 @@
 import User from "../../models/user/user.js";
 import httpStatus from "http-status";
+import bcrypt from "bcrypt";
+import { jwtToken } from "../../util/generateToken.js";
 
 const createUser = async (req, res) => {
   //collect the data from req body
@@ -30,9 +32,13 @@ const createUser = async (req, res) => {
     return;
   }
 
+  //hass password
+  const saltRound = 10;
+  const hash = await bcrypt.hash(data.password, saltRound);
+
   const createdUser = await User.create({
     username: data.username,
-    password: data.password,
+    password: hash, //hash the password using bcrycpt
     email: data.email,
   });
 
@@ -60,7 +66,9 @@ const loginUser = async (req, res) => {
   }
 
   //check that password is correct
-  if (userExist.password !== data.password) {
+  const isConfirmed = await ComparePassword(data.password, userExist.password);
+
+  if (!isConfirmed) {
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
       message: "Credential not correct",
@@ -71,9 +79,13 @@ const loginUser = async (req, res) => {
   res.status(httpStatus.OK).json({
     status: "success",
     data: userExist,
+    token: jwtToken(userExist._id, userExist.email),
   });
 };
 
+async function ComparePassword(plainPassword, hashedPassword) {
+  return bcrypt.compare(plainPassword, hashedPassword);
+}
 const getUsers = async (req, res) => {
   const users = await User.find({});
   res.status(httpStatus.OK).json({
