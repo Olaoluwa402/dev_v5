@@ -1,0 +1,15 @@
+{
+  "name": "bookshelf",
+  "version": "1.0.0",
+  "description": "a book library management system.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "books",
+    "library"
+  ],
+  "author": "greghim53lf",
+  "license": "ISC"
+}
