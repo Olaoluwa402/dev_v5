@@ -63,10 +63,64 @@ const loginUser = async (req, res) => {
   });
 };
 const getUsers = async (req, res) => {
-  const allUsers= await User.find({});
- res.status(httpStatus.OK).json({
+  const allUsers = await User.find({});
+  res.status(httpStatus.OK).json({
     status: "success",
-    data: allUsers
- })
+    data: allUsers,
+  });
 };
+const getUser = async (req, res) => {
+  const { id } = req.params;
+  const { type, email, username } = req.query;
+  console.log(type, email, "type");
 
+  let user;
+  switch (type) {
+    case "ID":
+      user = await User.findById(id);
+      if (!user) {
+        res.status(http.BAD_REQUEST).json({
+          status: "error",
+          message: "user with id not found",
+        });
+        break;
+      }
+      res.status(httpStatus.Ok).json({
+        status: "success",
+        data: user,
+      });
+      break;
+    case "EMAIL":
+      user = await User.findOne({
+        email: email,
+      });
+      if (!user) {
+        res.status(httpStatus.BAD_REQUEST).json({
+          status: "error",
+          message: "User with email not found",
+        });
+        break;
+      }
+      res.status(httpStatus.OK).json({
+        status: "success",
+      });
+      break;
+
+    case "USERNAME":
+      user = await User.findOne({
+        username: username,
+      });
+      if(!user){
+        res.status(httpStatus.BAD_REQUEST).json({
+            status: "error",
+            message: "username not found"
+        })
+        break;
+      }
+      res.status(httpStatus.OK).json({
+        ststus: "success",
+        data: user
+      })
+      break;
+  }
+};
