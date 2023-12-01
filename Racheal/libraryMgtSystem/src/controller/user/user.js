@@ -118,9 +118,18 @@ const getUser = async (req, res) => {
         break;
       }
       res.status(httpStatus.OK).json({
-        ststus: "success",
+        status: "success",
         data: user
       })
       break;
+
+      default: 
+      res.status(httpStatus.NOT_FOUND).json({
+        status: error,
+        message: "User not found"
+      })
   }
 };
+const updateUser = () => {
+    
+}
