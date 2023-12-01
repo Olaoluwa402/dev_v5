@@ -1,29 +1,32 @@
 {
-  "name": "expense_tracker",
+  "name": "e-library",
   "version": "1.0.0",
-  "description": "this app tracks all inflows and outflows",
+  "description": "digital library  system",
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node Backend/server.js",
+    "dev": "nodemon Backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git"
   },
   "keywords": [
-    "income",
-    "expense"
+    "library"
   ],
-  "author": "itskills",
+  "author": "Quadri",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "helmet": "^7.1.0",
     "http-status": "^1.7.3",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.1"
+    "mongoose": "^8.0.2",
+    "otp-generator": "^4.0.1"
   },
   "devDependencies": {
     "colors": "^1.4.0",

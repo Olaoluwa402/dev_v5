@@ -1,0 +1,34 @@
+{
+  "name": "library_system",
+  "version": "1.0.0",
+  "description": "This is a library management system which automates and works like a real life library management system",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "keywords": [
+    "Library",
+    "Librarian",
+    "Books",
+    "Admin",
+    "bookshelf"
+  ],
+  "author": "Callistus Anwara",
+  "license": "ISC",
+  "devDependencies": {
+    "colors": "^1.4.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "http-status": "^1.7.3",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.1"
+  }
+}

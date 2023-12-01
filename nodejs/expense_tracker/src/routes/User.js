@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { validationMiddleware } from "../middleware/validation.js";
+import { verifyUser } from "../middleware/verifyUser.js";
 import {
   createUserSchema,
   loginUserSchema,
@@ -23,7 +24,7 @@ router.route("/login").post(validationMiddleware(loginUserSchema), loginUser);
 router
   .route("/:id")
   .get(validationMiddleware(getUserSchema, "QUERY"), getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+  .patch(verifyUser, updateUser) //protected route
+  .delete(verifyUser, deleteUser); //protected route
 
 export default router;
