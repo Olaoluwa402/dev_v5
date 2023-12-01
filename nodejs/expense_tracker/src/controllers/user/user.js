@@ -192,6 +192,8 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
+  //const id = req.user.id : this is made possible by the use of verifyUser middlare in this route
+
   const { id } = req.params;
   const foundUser = await User.findOne({ _id: id });
   if (!foundUser) {
@@ -199,6 +201,7 @@ const deleteUser = async (req, res) => {
       status: "error",
       message: "User not found",
     });
+    return;
   }
 
   await User.findByIdAndDelete(id);
