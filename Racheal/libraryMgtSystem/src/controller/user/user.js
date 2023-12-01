@@ -1,20 +1,19 @@
-import User from "../../../../../nodejs/expense_tracker/src/models/user/user";
 import LibUser from "../../Models/User/user";
 import httpStatus from "http-status";
 
 const createLibUser = async (req, res) => {
   const data = req.body;
-  const emailExist = await User.findOne({
+  const emailExist = await LibUser.findOne({
     email: data.email,
   });
   if (emailExist) {
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
-      message: "User with email already exists",
+      message: "LibUser with email already exists",
     });
     return;
   }
-  const usernameExist = await User.findOne({
+  const usernameExist = await LibUser.findOne({
     username: data.username,
   });
   if (usernameExist) {
@@ -24,7 +23,7 @@ const createLibUser = async (req, res) => {
     });
     return;
   }
-  const createdUser = await User.create({
+  const createdUser = await LibUser.create({
     firstname: data.firstname,
     lastname: data.lastname,
     password: data.password,
@@ -40,7 +39,7 @@ const createLibUser = async (req, res) => {
 };
 const loginUser = async (req, res) => {
   const data = req.body;
-  const userExists = await User.findOne({
+  const userExists = await LibUser.findOne({
     email: data.email,
   });
   if (!userExists) {
@@ -63,7 +62,7 @@ const loginUser = async (req, res) => {
   });
 };
 const getUsers = async (req, res) => {
-  const allUsers = await User.find({});
+  const allUsers = await LibUser.find({});
   res.status(httpStatus.OK).json({
     status: "success",
     data: allUsers,
@@ -77,7 +76,7 @@ const getUser = async (req, res) => {
   let user;
   switch (type) {
     case "ID":
-      user = await User.findById(id);
+      user = await LibUser.findById(id);
       if (!user) {
         res.status(http.BAD_REQUEST).json({
           status: "error",
@@ -91,7 +90,7 @@ const getUser = async (req, res) => {
       });
       break;
     case "EMAIL":
-      user = await User.findOne({
+      user = await LibUser.findOne({
         email: email,
       });
       if (!user) {
@@ -107,7 +106,7 @@ const getUser = async (req, res) => {
       break;
 
     case "USERNAME":
-      user = await User.findOne({
+      user = await LibUser.findOne({
         username: username,
       });
       if(!user){
@@ -130,6 +129,46 @@ const getUser = async (req, res) => {
       })
   }
 };
-const updateUser = () => {
-    
+const updateUser = async (req, res) => {
+  const {email, password} = req.body
+  const { id } = req.params
+  const foundUser = await LibUser.findOne({_id:id})
+  if(!foundUser){
+    res.status(httpStatus.NOT_FOUND).json({
+        status: error,
+        message: "user with id not found"
+    })
+  }
+
+  const emailExist = await LibUser.findOne({
+    email: email
+  })
+  if(emailExist){
+    res.status(httpStatus.NOT_FOUND).json({
+        status: "error",
+        message: "Email not available use another email"
+    })
+    return;
+  }
+  const updatedUser = await LibUser.findByIdAndUpdate(id, {
+    email: email, password: password}, {new: true}
+  )
 }
+const deleteUser = async (req, res) => {
+    const {id} = req.params
+    const foundUser = await LibUser.findOne({_id: id})
+    if(!foundUser){
+        res.status(httpStatus.NOT_FOUND).json({
+            error: "error",
+            status: "User not found"
+        })
+        return;
+    }
+    await LibUser.findByIdAndDelete({_id: id})
+    res.status(httpStatus.OK).json({
+        status: "deleted successfully",
+        data: `user with ${id} has been deleted`
+    })
+
+}
+export {createLibUser, loginUser, getUser, getUsers, updateUser, deleteUser}
