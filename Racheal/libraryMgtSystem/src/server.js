@@ -2,10 +2,15 @@ import express from "express";
 import httpStatus from "http-status";
 import colors from "colors";
 import dotenv from "dotenv";
-dotenv.config()
+dotenv.config({})
+import {dbConnect} from "./Config/db.js"
 const app = express();
 
 const { NODE_ENV, PORT } = process.env;
+if (NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
 app.get("/", (req, res) => {
   try {
     res
@@ -19,11 +24,17 @@ app.get("/", (req, res) => {
     res.status(httpStatus[404]).send(error.message);
   }
 });
-const port = NODE_ENV === " production" ? PORT : 3000;
+
+dbConnect().then((res) => {
+  console.log("Database is connected")
+  const port = NODE_ENV === "production" ? PORT : 6000;
 app.listen(port, (error) => {
   if (error) {
-    console.log(error);
+    console.log("server error", error);
     return;
   }
   console.log(`App is listening on port ${port} in ${NODE_ENV} mode`.bgGreen);
 });
+}).catch((error)=> {
+  console.log(`database error ${error}`);
+})
