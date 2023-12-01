@@ -1,10 +1,9 @@
-import User from "../../../../../nodejs/expense_tracker/src/models/user/user";
 import LibUser from "../../Models/User/user";
 import httpStatus from "http-status";
 
 const createLibUser = async (req, res) => {
   const data = req.body;
-  const emailExist = await User.findOne({
+  const emailExist = await LibUser.findOne({
     email: data.email,
   });
   if (emailExist) {
@@ -14,7 +13,7 @@ const createLibUser = async (req, res) => {
     });
     return;
   }
-  const usernameExist = await User.findOne({
+  const usernameExist = await LibUser.findOne({
     username: data.username,
   });
   if (usernameExist) {
@@ -24,7 +23,7 @@ const createLibUser = async (req, res) => {
     });
     return;
   }
-  const createdUser = await User.create({
+  const createdUser = await LibUser.create({
     firstname: data.firstname,
     lastname: data.lastname,
     password: data.password,
@@ -63,7 +62,7 @@ const loginUser = async (req, res) => {
   });
 };
 const getUsers = async (req, res) => {
-  const allUsers = await User.find({});
+  const allUsers = await LibUser.find({});
   res.status(httpStatus.OK).json({
     status: "success",
     data: allUsers,
@@ -77,7 +76,7 @@ const getUser = async (req, res) => {
   let user;
   switch (type) {
     case "ID":
-      user = await User.findById(id);
+      user = await LibUser.findById(id);
       if (!user) {
         res.status(http.BAD_REQUEST).json({
           status: "error",
@@ -91,7 +90,7 @@ const getUser = async (req, res) => {
       });
       break;
     case "EMAIL":
-      user = await User.findOne({
+      user = await LibUser.findOne({
         email: email,
       });
       if (!user) {
@@ -107,7 +106,7 @@ const getUser = async (req, res) => {
       break;
 
     case "USERNAME":
-      user = await User.findOne({
+      user = await LibUser.findOne({
         username: username,
       });
       if(!user){
