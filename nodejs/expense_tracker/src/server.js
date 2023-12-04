@@ -10,6 +10,7 @@ import helmet from "helmet";
 import colors from "colors";
 import { dbConnect } from "./config/db.js";
 import UserRoute from "./routes/User.js";
+import CategoryRoute from "./routes/Category.js";
 
 const app = express();
 const { NODE_ENV, PORT } = process.env;
@@ -24,6 +25,7 @@ if (NODE_ENV === "development") {
 
 //routes
 app.use("/users", UserRoute);
+app.use("/categories", CategoryRoute);
 
 app.get("/", (req, res) => {
   res.status(httpStatus.OK).json({
