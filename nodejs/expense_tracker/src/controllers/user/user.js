@@ -6,7 +6,6 @@ import { jwtToken } from "../../util/generateToken.js";
 const createUser = async (req, res) => {
   //collect the data from req body
   const data = req.body;
-
   //import the db model and create the user
   //User.findOne({_id:req.params.id})
   //User.findById(req.params.id)
@@ -110,7 +109,7 @@ const getUser = async (req, res) => {
       if (!user) {
         res.status(httpStatus.NOT_FOUND).json({
           status: "error",
-          message: "User ith id not found",
+          message: "User with id not found",
         });
         break;
       }
