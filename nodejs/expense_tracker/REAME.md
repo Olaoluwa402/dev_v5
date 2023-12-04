@@ -21,10 +21,15 @@
 #next
 
 - authentication and authorization
+
   - authentication is identity verification
+
   1.  on successful login, issue a token to the user that will be later used to identify the user (jsonwebtoken)
   2.  write a middleware function to verify the token issued to the user
   3.  in the middleware, if token is supplied, is correct and not expired, allow the user have access to protected routes (protected routes are route that require the identity of the user to be known before access to the resoure is allowed)
+
+  - image upload to server using multer
+
 - error handling
 
 - #expense tracker app
