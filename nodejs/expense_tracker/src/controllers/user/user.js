@@ -40,6 +40,7 @@ const createUser = async (req, res) => {
     username: data.username,
     password: hash, //hash the password using bcrycpt
     email: data.email,
+    // role: "admin",
   });
 
   res.status(httpStatus.CREATED).json({
