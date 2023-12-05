@@ -11,6 +11,7 @@ import colors from "colors";
 import { dbConnect } from "./config/db.js";
 import UserRoute from "./routes/User.js";
 import CategoryRoute from "./routes/Category.js";
+import IncomeExpenseRoute from "./routes/Expense.js";
 
 const app = express();
 const { NODE_ENV, PORT } = process.env;
@@ -26,6 +27,7 @@ if (NODE_ENV === "development") {
 //routes
 app.use("/users", UserRoute);
 app.use("/categories", CategoryRoute);
+app.use("/expenses", IncomeExpenseRoute);
 
 app.get("/", (req, res) => {
   res.status(httpStatus.OK).json({
