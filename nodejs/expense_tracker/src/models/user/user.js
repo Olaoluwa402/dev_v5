@@ -15,6 +15,9 @@ const userShema = mongoose.Schema(
       unique: true,
       required: [true, "Please supply the email"],
     },
+    avatar: {
+      type: String,
+    },
     inflows: [
       {
         type: mongoose.Schema.Types.ObjectId,

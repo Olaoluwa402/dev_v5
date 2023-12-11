@@ -39,6 +39,33 @@ app.get("/serve-html", (req, res) => {
   });
 });
 
+app.get("/write-read-file", (req, res) => {
+  const content = "New contetne kughkjg";
+  //appendFile
+  //rename
+  //unlink -delete
+  fs.writeFile("content/index.txt", content, (err) => {
+    if (err) {
+      res
+        .status(400)
+        .set({
+          "Content-Type": "application/json",
+        })
+        .json("hello World");
+      return;
+    }
+
+    const nr = fs.readFileSync("content/index.txt", "utf-8");
+    res
+      .status(200)
+      .set({
+        "Content-Type": "application/json",
+      })
+      .json(nr);
+    return;
+  });
+});
+
 app.get("*", (req, res) => {
   console.log(res, "res");
   res.status(404).json("Not a valid endpoint");
