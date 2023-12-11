@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     );
   },
 });
-
+ 
 function checkFileType(file, cb) {
   // Allowed ext
   const filetypes = /jpeg|jpg|png|webp/;
