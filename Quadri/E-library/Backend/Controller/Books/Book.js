@@ -2,8 +2,8 @@ import BookModel from "../../Models/Book.js";
 import httpStatus from "http-status";
 
 export const createBooks = async (req, res) => {
-  const { title, author, isbn, publicationYear, In_Stock } = req.body;
-
+  const { title, author, isbn, publicationYear, In_Stock,coverImage,categoryId } = req.body;
+    
   try {
     const titleExist = await BookModel.findOne({ title: title, isbn: isbn });
     if (titleExist) {
@@ -20,6 +20,9 @@ export const createBooks = async (req, res) => {
       isbn,
       publicationYear,
       In_Stock,
+      coverImage,
+      categoryId
+
     });
     res.status(httpStatus.OK).json({
       status: "success",
@@ -35,7 +38,7 @@ export const createBooks = async (req, res) => {
 
 export const getBooks = async (req, res) => {
   try {
-    const books = await BookModel.find({});
+    const books = await BookModel.find({}).populate({path:"categoryId",model:"Category"});
     res.status(httpStatus.OK).json({
       status: "Success",
       payload: books,
@@ -51,7 +54,7 @@ export const getBooks = async (req, res) => {
 export const getBook = async (req, res) => {
   const bookId = req.params.id;
   try {
-    const book = await BookModel.findById({ _id: bookId });
+    const book = await BookModel.findById({ _id: bookId }).populate("category");
     if (!book) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",

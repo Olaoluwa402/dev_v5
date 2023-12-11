@@ -39,7 +39,7 @@ export const createUser = async (req, res) => {
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({
       status: "errors",
-      payload: error.message,
+      message: error.message,
     });
   }
 };
@@ -52,7 +52,7 @@ export const loginUser = async (req, res) => {
     if (!userExist) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",
-        payload: "User not found",
+        message: "User not found",
       });
       return;
     }
@@ -61,7 +61,7 @@ export const loginUser = async (req, res) => {
     if (!decodePassword) {
       res.status(httpStatus.FORBIDDEN).json({
         status: "error",
-        payload: "Credentials does not match",
+        message: "Credentials does not match",
       });
       return;
     }
@@ -74,7 +74,7 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({
       status: "errors",
-      payload: error.message,
+      message: error.message,
     });
   }
 };

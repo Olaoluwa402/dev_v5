@@ -5,5 +5,7 @@ export const bookSchema = joi.object({
     author: joi.string().required(),
     isbn:joi.string().required(),
     publicationYear:joi.number().required(),
-    In_Stock:joi.number().required()
+    In_Stock:joi.number().required(),
+    categoryId:joi.string().required(),
+    coverImage:joi.string().required()
 })
