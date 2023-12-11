@@ -2,8 +2,13 @@ import BookModel from "../../Models/Book.js";
 import httpStatus from "http-status";
 
 export const createBooks = async (req, res) => {
+<<<<<<< HEAD
   const { title, author, isbn, publicationYear, In_Stock,coverImage,categoryId } = req.body;
     
+=======
+  const { title, author, isbn, publicationYear, In_Stock } = req.body;
+
+>>>>>>> 96ce3306fc40d6631d282cb4da188104e6032160
   try {
     const titleExist = await BookModel.findOne({ title: title, isbn: isbn });
     if (titleExist) {
@@ -20,9 +25,12 @@ export const createBooks = async (req, res) => {
       isbn,
       publicationYear,
       In_Stock,
+<<<<<<< HEAD
       coverImage,
       categoryId
 
+=======
+>>>>>>> 96ce3306fc40d6631d282cb4da188104e6032160
     });
     res.status(httpStatus.OK).json({
       status: "success",
@@ -38,7 +46,11 @@ export const createBooks = async (req, res) => {
 
 export const getBooks = async (req, res) => {
   try {
+<<<<<<< HEAD
     const books = await BookModel.find({}).populate({path:"categoryId",model:"Category"});
+=======
+    const books = await BookModel.find({});
+>>>>>>> 96ce3306fc40d6631d282cb4da188104e6032160
     res.status(httpStatus.OK).json({
       status: "Success",
       payload: books,
@@ -54,7 +66,11 @@ export const getBooks = async (req, res) => {
 export const getBook = async (req, res) => {
   const bookId = req.params.id;
   try {
+<<<<<<< HEAD
     const book = await BookModel.findById({ _id: bookId }).populate("category");
+=======
+    const book = await BookModel.findById({ _id: bookId });
+>>>>>>> 96ce3306fc40d6631d282cb4da188104e6032160
     if (!book) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",

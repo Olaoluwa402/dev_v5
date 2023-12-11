@@ -1,10 +1,12 @@
 import User from "../../models/user/user.js";
 import httpStatus from "http-status";
+import bcrypt from "bcrypt";
+import { jwtToken } from "../../util/generateToken.js";
+import { deleteText, readText } from "../../util/FsUtils.js";
 
 const createUser = async (req, res) => {
   //collect the data from req body
   const data = req.body;
-
   //import the db model and create the user
   //User.findOne({_id:req.params.id})
   //User.findById(req.params.id)
@@ -30,10 +32,17 @@ const createUser = async (req, res) => {
     return;
   }
 
+  //hass password
+  const saltRound = 10;
+  const hash = await bcrypt.hash(data.password, saltRound);
+
   const createdUser = await User.create({
     username: data.username,
-    password: data.password,
+    password: hash, //hash the password using bcrycpt
     email: data.email,
+    avatar:
+      "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1546980028.1702166400&semt=sph",
+    // role: "admin",
   });
 
   res.status(httpStatus.CREATED).json({
@@ -60,7 +69,9 @@ const loginUser = async (req, res) => {
   }
 
   //check that password is correct
-  if (userExist.password !== data.password) {
+  const isConfirmed = await ComparePassword(data.password, userExist.password);
+
+  if (!isConfirmed) {
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
       message: "Credential not correct",
@@ -71,9 +82,13 @@ const loginUser = async (req, res) => {
   res.status(httpStatus.OK).json({
     status: "success",
     data: userExist,
+    token: jwtToken(userExist._id, userExist.email),
   });
 };
 
+async function ComparePassword(plainPassword, hashedPassword) {
+  return bcrypt.compare(plainPassword, hashedPassword);
+}
 const getUsers = async (req, res) => {
   const users = await User.find({});
   res.status(httpStatus.OK).json({
@@ -97,7 +112,7 @@ const getUser = async (req, res) => {
       if (!user) {
         res.status(httpStatus.NOT_FOUND).json({
           status: "error",
-          message: "User ith id not found",
+          message: "User with id not found",
         });
         break;
       }
@@ -179,7 +194,40 @@ const updateUser = async (req, res) => {
   });
 };
 
+const userProfileUpload = async (req, res) => {
+  const userId = req.user.id;
+  console.log(req.file, "req.file");
+
+  const foundUser = await User.findOne({ _id: userId });
+  if (!foundUser) {
+    res.status(httpStatus.NOT_FOUND).json({
+      status: "error",
+      message: "User not found",
+    });
+    return;
+  }
+
+  //remove old file from server
+  const filePresent = await readText(`public/${foundUser.avatar}`);
+  if (filePresent) {
+    await deleteText(`public/${foundUser.avatar}`);
+  }
+
+  const userWithImageUpload = await User.findByIdAndUpdate(
+    { _id: userId },
+    { avatar: req.file.filename },
+    { new: true }
+  );
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    data: userWithImageUpload,
+  });
+};
+
 const deleteUser = async (req, res) => {
+  //const id = req.user.id : this is made possible by the use of verifyUser middlare in this route
+
   const { id } = req.params;
   const foundUser = await User.findOne({ _id: id });
   if (!foundUser) {
@@ -187,9 +235,16 @@ const deleteUser = async (req, res) => {
       status: "error",
       message: "User not found",
     });
+    return;
   }
 
   await User.findByIdAndDelete(id);
+
+  //remove old file from server
+  const filePresent = await readText(`public/${foundUser.avatar}`);
+  if (filePresent) {
+    await deleteText(`public/${foundUser.avatar}`);
+  }
 
   res.status(httpStatus.OK).json({
     status: "success",
@@ -197,4 +252,12 @@ const deleteUser = async (req, res) => {
   });
 };
 
-export { createUser, loginUser, getUsers, getUser, updateUser, deleteUser };
+export {
+  createUser,
+  loginUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+  userProfileUpload,
+};
