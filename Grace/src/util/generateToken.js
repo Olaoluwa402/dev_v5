@@ -1,4 +1,3 @@
-//load environment variables fro .env file
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -9,4 +8,3 @@ export const jwtToken = (id, email) => {
     expiresIn: JWT_EXPIRY,
   });
 };
-  
