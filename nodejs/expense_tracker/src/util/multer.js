@@ -10,11 +10,17 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(
       null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      file.fieldname +
+        "-" +
+        file.originalname.slice(0, file.originalname.lastIndexOf(".")) +
+        "-" +
+        Date.now() +
+        Math.random() * 10000000 +
+        path.extname(file.originalname)
     );
   },
 });
- 
+
 function checkFileType(file, cb) {
   // Allowed ext
   const filetypes = /jpeg|jpg|png|webp/;
