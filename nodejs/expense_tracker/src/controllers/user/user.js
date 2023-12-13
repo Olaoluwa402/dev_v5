@@ -2,6 +2,7 @@ import User from "../../models/user/user.js";
 import httpStatus from "http-status";
 import bcrypt from "bcrypt";
 import { jwtToken } from "../../util/generateToken.js";
+import { deleteText, readText } from "../../util/FsUtils.js";
 
 const createUser = async (req, res) => {
   //collect the data from req body
@@ -39,6 +40,9 @@ const createUser = async (req, res) => {
     username: data.username,
     password: hash, //hash the password using bcrycpt
     email: data.email,
+    avatar:
+      "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?size=338&ext=jpg&ga=GA1.1.1546980028.1702166400&semt=sph",
+    // role: "admin",
   });
 
   res.status(httpStatus.CREATED).json({
@@ -190,6 +194,37 @@ const updateUser = async (req, res) => {
   });
 };
 
+const userProfileUpload = async (req, res) => {
+  const userId = req.user.id;
+  console.log(req.file, "req.file");
+
+  const foundUser = await User.findOne({ _id: userId });
+  if (!foundUser) {
+    res.status(httpStatus.NOT_FOUND).json({
+      status: "error",
+      message: "User not found",
+    });
+    return;
+  }
+
+  //remove old file from server
+  const filePresent = await readText(`public/${foundUser.avatar}`);
+  if (filePresent) {
+    await deleteText(`public/${foundUser.avatar}`);
+  }
+
+  const userWithImageUpload = await User.findByIdAndUpdate(
+    { _id: userId },
+    { avatar: req.file.filename },
+    { new: true }
+  );
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    data: userWithImageUpload,
+  });
+};
+
 const deleteUser = async (req, res) => {
   //const id = req.user.id : this is made possible by the use of verifyUser middlare in this route
 
@@ -205,10 +240,24 @@ const deleteUser = async (req, res) => {
 
   await User.findByIdAndDelete(id);
 
+  //remove old file from server
+  const filePresent = await readText(`public/${foundUser.avatar}`);
+  if (filePresent) {
+    await deleteText(`public/${foundUser.avatar}`);
+  }
+
   res.status(httpStatus.OK).json({
     status: "success",
     data: `User with ID ${id} is deleted`,
   });
 };
 
-export { createUser, loginUser, getUsers, getUser, updateUser, deleteUser };
+export {
+  createUser,
+  loginUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+  userProfileUpload,
+};

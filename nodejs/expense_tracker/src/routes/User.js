@@ -14,13 +14,18 @@ import {
   getUser,
   updateUser,
   deleteUser,
+  userProfileUpload,
 } from "../controllers/user/user.js";
+import { upload } from "../util/multer.js";
 
 router
   .route("/")
   .get(getUsers)
   .post(validationMiddleware(createUserSchema), createUser);
 router.route("/login").post(validationMiddleware(loginUserSchema), loginUser);
+router
+  .route("/upload-profile")
+  .patch(verifyUser, upload.single("avatar"), userProfileUpload);
 router
   .route("/:id")
   .get(validationMiddleware(getUserSchema, "QUERY"), getUser)

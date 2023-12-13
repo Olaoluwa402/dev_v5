@@ -5,8 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node Backend/server.js",
-    "dev": "nodemon Backend/server.js"
+    "dev": "nodemon Backend/server.js",
+    "start": "node Backend/server.js"
   },
   "repository": {
     "type": "git",

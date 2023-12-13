@@ -1,0 +1,28 @@
+{
+  "name": "lecture-1",
+  "version": "1.0.0",
+  "description": "learning about node",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start:httpServer": "nodemon http_server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "node",
+    "authenticaltion",
+    "server",
+    "http"
+  ],
+  "author": "Olaoluwa",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.3.4",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "colors": "^1.4.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.22"
+  }
+}
