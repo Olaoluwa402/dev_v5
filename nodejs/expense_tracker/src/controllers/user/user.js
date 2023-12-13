@@ -26,11 +26,11 @@ const createUser = async (req, res) => {
   if (usernameExist) {
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
-      message: "User with yusername already exist",
+      message: "User with username already exist",
     });
     return;
   }
-
+  
   //hass password
   const saltRound = 10;
   const hash = await bcrypt.hash(data.password, saltRound);

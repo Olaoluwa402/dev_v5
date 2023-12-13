@@ -24,7 +24,6 @@ if (NODE_ENV === "development") {
 
 //routes
 app.use("/users", UserRoute);
-
 app.get("/", (req, res) => {
   res.status(httpStatus.OK).json({
     status: "success",

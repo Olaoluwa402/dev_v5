@@ -10,7 +10,7 @@ import {
 import {
   createUser,
   loginUser,
-  getUsers,
+  getUsers, 
   getUser,
   updateUser,
   deleteUser,
