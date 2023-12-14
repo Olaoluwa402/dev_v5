@@ -4,6 +4,7 @@ import { serialize } from "../../Utility/Serialize.js";
 import httpStatus from "http-status";
 import { uniqueCode } from "../../Utility/uniqueCode.js";
 import { generateToken } from "../../Utility/jwt-token.js";
+import { deleteText, readText } from "../../Utility/Fs.js";
 
 export const createUser = async (req, res) => {
   const data = req.body;
@@ -149,6 +150,35 @@ export const updateUser = async (req, res) => {
       payload: error.message,
     });
   }
+};
+
+export const userProfileUpload = async (req, res) => {
+  const userId = req.params.id;
+
+  const foundUser = await UserModel.findOne({ _id: userId });
+  if (!foundUser) {
+    res.status(httpStatus.NOT_FOUND).json({
+      status: "error",
+      message: "User not found",
+    });
+    return;
+  }
+
+  const filePresent = await readText(`public/${foundUser.avatar}`);
+  if (filePresent) {
+    await deleteText(`public/${foundUser.avatar}`);
+  }
+
+  const uploadUserImage = await UserModel.findOneAndUpdate(
+    { _id: userId },
+    { avatar: req.file.filename },
+    { new: true }
+  );
+
+  res.status(httpStatus.OK).json({
+    status: "success",
+    data: uploadUserImage,
+  });
 };
 
 export const deleteUser = async (req, res) => {
