@@ -3,6 +3,10 @@ import httpStatus from "http-status";
 import bcrypt from "bcrypt";
 import { jwtToken } from "../../util/generateToken.js";
 import { deleteText, readText } from "../../util/FsUtils.js";
+import {
+  uploadToCloudinary,
+  uploadSingleOrMultiImagesToClodinary,
+} from "cloudi-upload-with-ease";
 
 const createUser = async (req, res) => {
   //collect the data from req body
@@ -198,6 +202,18 @@ const userProfileUpload = async (req, res) => {
   const userId = req.user.id;
   console.log(req.file, "req.file");
 
+  // const config = {
+  //   cloudinary_cloud_name: process.env.cloudinary_cloud_name,
+  //   cloudinary_api_key: process.env.cloudinary_api_key,
+  //   cloudinary_api_secret: process.env.cloudinary_api_secret,
+  // };
+
+  //   const response = await uploadSingleOrMultiImagesToClodinary(
+  //     req.files,
+  //     "image",
+  //     config
+  //   );
+
   const foundUser = await User.findOne({ _id: userId });
   if (!foundUser) {
     res.status(httpStatus.NOT_FOUND).json({
@@ -208,21 +224,30 @@ const userProfileUpload = async (req, res) => {
   }
 
   //remove old file from server
-  const filePresent = await readText(`public/${foundUser.avatar}`);
-  if (filePresent) {
-    await deleteText(`public/${foundUser.avatar}`);
+  try {
+    const filePresent = await readText(`public/${foundUser.avatar}`);
+    console.log(filePresent, "filePresent");
+    if (filePresent) {
+      await deleteText(`public/${foundUser.avatar}`);
+    }
+
+    const userWithImageUpload = await User.findByIdAndUpdate(
+      { _id: userId },
+      { avatar: req.file.filename },
+      { new: true }
+    );
+
+    res.status(httpStatus.OK).json({
+      status: "success",
+      data: userWithImageUpload,
+    });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(httpStatus.BAD_REQUEST).json({
+      status: "error",
+      data: error,
+    });
   }
-
-  const userWithImageUpload = await User.findByIdAndUpdate(
-    { _id: userId },
-    { avatar: req.file.filename },
-    { new: true }
-  );
-
-  res.status(httpStatus.OK).json({
-    status: "success",
-    data: userWithImageUpload,
-  });
 };
 
 const deleteUser = async (req, res) => {
