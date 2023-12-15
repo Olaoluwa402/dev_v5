@@ -33,6 +33,7 @@ const Register = () => {
       [name]: value,
     }));
   };
+  console.log(input)
 
   const createUserHandler = () => {
     dispatch(

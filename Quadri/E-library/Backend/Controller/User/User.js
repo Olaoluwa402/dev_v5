@@ -25,7 +25,7 @@ export const createUser = async (req, res) => {
     const user = await UserModel.create({
       firstName: data.firstName,
       lastName: data.lastName,
-      username: data.username,
+      userName: data.userName,
       email: data.email,
       password: hashedPassword,
       phoneNumber: data.phoneNumber,
