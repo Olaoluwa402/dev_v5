@@ -32,7 +32,7 @@ export const createUserAction =
       console.log(data, "data");
       dispatch({
         type: CREATE_USER_SUCCESS,
-        payload: data.user,
+        payload: data.data,
       });
     } catch (error) {
       //3. after the API call failure

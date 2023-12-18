@@ -102,10 +102,10 @@ const getUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const id = req.params.id;
   const type = req.query.type;
   const email = req.query.email;
   const username = req.query.username;
+  const id = req.query.id;
 
   console.log(type, email, "type");
 

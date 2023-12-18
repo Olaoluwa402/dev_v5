@@ -14,6 +14,19 @@ export const loginUserSchema = Joi.object({
 
 export const getUserSchema = Joi.object({
   type: Joi.string().valid("ID", "EMAIL", "USERNAME").required(),
-  username: Joi.string().optional(),
-  email: Joi.string().optional(),
+  username: Joi.when("type", {
+    is: "USERNAME",
+    then: Joi.string().required(),
+    otherwise: Joi.string().optional(), // Otherwise, it's optional
+  }),
+  id: Joi.when("type", {
+    is: "ID",
+    then: Joi.string().required(),
+    otherwise: Joi.string().optional(), // Otherwise, it's optional
+  }),
+  email: Joi.when("type", {
+    is: "EMAIL",
+    then: Joi.string().required(),
+    otherwise: Joi.string().optional(), // Otherwise, it's optional
+  }),
 });
