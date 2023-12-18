@@ -9,7 +9,7 @@ import morgan from "morgan";
 import colors from "colors";
 import helmet from "helmet";
 import bookRouter from "./routes/book.js"
-
+import userRouter from "./routes/user.js"
 
 // creating app
 const app = express();
@@ -25,7 +25,9 @@ if (NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/book", bookRouter);
+app.use("/books", bookRouter);
+app.use("/users", userRouter)
+
 app.get("/", (req, res) => {
   try {
     res.status(httpStatus.OK).json({
