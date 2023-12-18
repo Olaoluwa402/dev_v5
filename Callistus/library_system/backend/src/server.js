@@ -39,31 +39,37 @@ app.get("/", (req, res) => {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       error: "Internal server error",
     });
-  }
-});
-
-app.get("*", (req, res) => {
-  res.status(httpStatus.NOT_FOUND).json({
-    status: httpStatus.NOT_FOUND,
-    message: "No endpoint found",
-  });
-});
-
-dbConnection()
-  .then((res) => {
-    console.log(`Database is connected successfully`.bgGreen);
-    const port = NODE_ENV === "production" ? PORT : 5000;
-    app.listen(port, (err) => {
-      if (err) {
-        console.log("server error", err);
-        return;
-      }
-
-      console.log(
-        `Server is runnig on port ${port} in ${NODE_ENV} environment`.green
-      );
+    app.listen(PORT, () => {
+      console.log(`Server is listening at port ${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.log(`databse error: ${err}`.magenta);
-  });
+  }
+})
+
+
+    app.get("*", (req, res) => {
+      res.status(httpStatus.NOT_FOUND).json({
+        status: httpStatus.NOT_FOUND,
+        message: "No endpoint found",
+      });
+    });
+
+    dbConnection()
+      .then((res) => {
+        console.log(`Database is connected successfully`.bgGreen);
+        const port = NODE_ENV === "production" ? PORT : 5000;
+        app.listen(port, (err) => {
+          if (err) {
+            console.log("server error", err);
+            return;
+          }
+
+          console.log(
+            `Server is runnig on port ${port} in ${NODE_ENV} environment`.green
+          );
+        });
+      })
+      .catch((err) => {
+        console.log(`databse error: ${err}`.magenta);
+      })
+    
+  

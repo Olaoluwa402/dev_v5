@@ -16,6 +16,7 @@ const app = express();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(express.static("public"))
 
 app.use("/user", userRouter)
 app.use("/book", bookRouter)
@@ -37,7 +38,7 @@ dbConnect()
   .then((result) => {
     console.log("connected to Database".bgGreen);
 
-    const port = config.env === "production" ? config.env : 6000;
+    const port = config.env === "production" ? config.env : 3000;
 
     app.listen(port, (err) => {
       if (err) {

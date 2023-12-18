@@ -24,7 +24,7 @@ bookRouter
 
 bookRouter
   .route("/:id")
-  .get(userVerification, Authorized(["librarian,regular,admin"]), getBook)
+  .get(userVerification, Authorized(["librarian","regular","admin"]), getBook)
   .patch(userVerification, Authorized(["librarian"]), updateBook)
   .delete(userVerification, Authorized(["librarian"]), deleteBook);
 export default bookRouter;
