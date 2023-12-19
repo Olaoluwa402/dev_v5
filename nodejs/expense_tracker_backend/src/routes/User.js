@@ -27,8 +27,9 @@ router
   .route("/upload-profile")
   .patch(verifyUser, upload.single("avatar"), userProfileUpload);
 router
-  .route("/:id")
-  .get(validationMiddleware(getUserSchema, "QUERY"), getUser)
+  .route("/get-user")
+  .get(validationMiddleware(getUserSchema, "QUERY"), getUser);
+router
   .patch(verifyUser, updateUser) //protected route
   .delete(verifyUser, deleteUser); //protected route
 
