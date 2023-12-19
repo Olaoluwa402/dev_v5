@@ -9,7 +9,8 @@ import { CREATE_USER_CLEAR_ERROR, LOGIN_USER_CLEAR_ERROR } from '../../redux/con
 const LoginRegister = ({ register, login }) => {
     const dispatch = useDispatch();
     const {
-        createdUser: { error, user, success, loading }
+        createdUser: { error, user, success, loading },
+        loggedInUser: { error: loggedInError, user: loggedInUser, success: LogInSuccess, loading: logInLoading }
     } = useSelector((state) => state);
 
     //   const { error, success, user } = loginUser;
@@ -40,7 +41,14 @@ const LoginRegister = ({ register, login }) => {
                 dispatch({ type: CREATE_USER_CLEAR_ERROR });
             }, 3000);
         }
-    }, [dispatch, error, user, success]);
+
+        if (loggedInError) {
+            toast.error(`${loggedInError}`);
+            setTimeout(() => {
+                dispatch({ type: LOGIN_USER_CLEAR_ERROR });
+            }, 3000);
+        }
+    }, [dispatch, error, loggedInError, user, success]);
 
     async function LoginHandler() {
         dispatch(loginUserAction({ email: value.email, password: value.password }));
@@ -133,24 +141,17 @@ const LoginRegister = ({ register, login }) => {
                             </div>
                             {login ? (
                                 <div>
-                                    <button
-                                        onClick={LoginHandler}
-                                        type="submit"
-                                        className="mt-6 rounded-lg bg-blue-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
-                                    >
-                                        Sign in
-                                    </button>
-                                    {/* {isLoading.login ? (
-                    <Spinner />
-                  ) : (
-                    <button
-                      onClick={LoginHandler}
-                      type="submit"
-                      className="mt-6 rounded-lg bg-blue-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
-                    >
-                      Sign in
-                    </button>
-                  )} */}
+                                    {logInLoading ? (
+                                        <Spinner />
+                                    ) : (
+                                        <button
+                                            onClick={LoginHandler}
+                                            type="submit"
+                                            className="mt-6 rounded-lg bg-blue-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
+                                        >
+                                            Sign in
+                                        </button>
+                                    )}
                                 </div>
                             ) : (
                                 <div>

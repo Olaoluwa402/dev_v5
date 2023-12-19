@@ -24,8 +24,11 @@ export const loginUserAction =
             console.log(data, 'data');
             dispatch({
                 type: LOGIN_USER_SUCCESS,
-                payload: data.data
+                payload: { data: data.data, token: data.token }
             });
+
+            //persist to local storage
+            localStorage.setItem('expenseUserInfo', JSON.stringify({ data: data.data, token: data.token }));
         } catch (error) {
             //3. after the API call failure
             console.log(error);

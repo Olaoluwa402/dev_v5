@@ -13,7 +13,9 @@ import {
     LOGIN_USER_CLEAR_ERROR
 } from '../../constants/user/user';
 
-export const loginUserReducer = (state = { user: null, loading: false, error: null, success: false }, action) => {
+const userInfoFromLocalStorage = localStorage.getItem('expenseUserInfo') ? JSON.parse(localStorage.getItem('expenseUserInfo')) : null;
+
+export const loginUserReducer = (state = { user: userInfoFromLocalStorage, loading: false, error: null, success: false }, action) => {
     switch (action.type) {
         case LOGIN_USER_REQUEST:
             return {
