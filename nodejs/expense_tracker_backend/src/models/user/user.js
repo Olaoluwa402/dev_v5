@@ -24,6 +24,20 @@ const userShema = mongoose.Schema(
         ref: "IncomeExpense",
       },
     ],
+    access_tokens: [
+      {
+        token: {
+          type: String,
+          unique: true,
+          required: true,
+        },
+        type: {
+          type: String,
+          enum: ["old", "new"],
+          default: "new",
+        },
+      },
+    ],
     role: { type: String, enum: ["regular", "admin"], default: "regular" },
     password: { type: String, required: true },
   },

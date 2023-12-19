@@ -8,8 +8,10 @@ import {
   getUsers,
   loginUser,
   updateUser,
+  userProfileUpload,
 } from "../Controller/User/User.js";
 import { Authorized, userVerification } from "../Middleware/Auth.js";
+import { upload } from "../Utility/multer.js";
 
 const userRouter = express.Router();
 
@@ -17,6 +19,8 @@ userRouter
   .route("/")
   .post(validateMiddle(userSchema), createUser)
   .get(getUsers);
+
+  userRouter.route("/upload-profile").patch(userVerification,upload.single("avatar"), userProfileUpload)
 
 userRouter
   .route("/:id")
