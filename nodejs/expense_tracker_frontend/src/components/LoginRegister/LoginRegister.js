@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 //import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import Spinner from '../Spinner/CustomSpinner.jsx';
-import { createUserAction, loginUserAction } from '../../redux/actions/user/user.js';
+import { createUserAction, loginUserAction, clearErrorRegister, clearErrorLogin } from '../../reduxToolKit/features/auth';
 import { CREATE_USER_CLEAR_ERROR, LOGIN_USER_CLEAR_ERROR } from '../../redux/constants/user/user.js';
 
 const LoginRegister = ({ register, login }) => {
@@ -38,14 +38,14 @@ const LoginRegister = ({ register, login }) => {
         if (error) {
             toast.error(`${error}`);
             setTimeout(() => {
-                dispatch({ type: CREATE_USER_CLEAR_ERROR });
+                dispatch(clearErrorRegister());
             }, 3000);
         }
 
         if (loggedInError) {
             toast.error(`${loggedInError}`);
             setTimeout(() => {
-                dispatch({ type: LOGIN_USER_CLEAR_ERROR });
+                dispatch(clearErrorLogin());
             }, 3000);
         }
     }, [dispatch, error, loggedInError, user, success]);
