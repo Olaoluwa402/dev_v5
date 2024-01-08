@@ -43,15 +43,20 @@ export const loginUserAction =
 
 export const createUserAction =
     ({ email, password, username }) =>
-    async (dispatch, state) => {
+    async (dispatch, store) => {
         //1. before the API call
         dispatch({
             type: CREATE_USER_REQUEST
         });
 
+        // const {
+        //     loggedInUser: { user }
+        // } = store();
+
         const config = {
             headers: {
                 'Content-Type': 'application/json'
+                //authentication: `Bearer ${user.token}`
             }
         };
 
