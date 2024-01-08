@@ -8,17 +8,18 @@ import Modal from "../Modal/Modal";
 
 const Library = () => {
   const dispatch = useDispatch();
-  const { getBooks,modal } = useSelector((state) => state);
-  const {  book} = getBooks;
-  const {isModalOpen} = modal
+  const { getBooks, modal } = useSelector((state) => state);
+  const { book } = getBooks;
+  const {records} = book
+  const { isModalOpen } = modal;
   useEffect(() => {
     dispatch(getBooksAction());
   }, []);
 
-  const openModalHandler=(bookId)=>{
-    dispatch(getBookAction({bookId:bookId}))
-    dispatch(openModalAction())
-  }
+  const openModalHandler = (bookId) => {
+    dispatch(getBookAction({ bookId: bookId }));
+    dispatch(openModalAction());
+  };
 
   return (
     // <div>
@@ -58,9 +59,9 @@ const Library = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {isModalOpen && <Modal/>}
-                    {book && book.length > 0 ? (
-                      book.map((item) => {
+                    {isModalOpen && <Modal />}
+                    {records && records.length > 0 ? (
+                      records.map((item) => {
                         return (
                           <tr
                             key={item._id}
@@ -104,7 +105,10 @@ const Library = () => {
                             </td>
 
                             <td className="p-3 pr-0 text-end">
-                              <button onClick={openModalHandler} className="ml-auto relative text-green-800 font-bold bg-light-dark hover:text-primary flex items-center h-[25px] w-[25px] text-base leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
+                              <button
+                                onClick={openModalHandler}
+                                className="ml-auto relative text-green-800 font-bold bg-light-dark hover:text-primary flex items-center h-[25px] w-[25px] text-base leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center"
+                              >
                                 <span className="flex items-center justify-center p-0 m-0 leading-none shrink-0 bg-green-600 hover:bg-green-300 w-[25px] h-[25px] rounded-full">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
