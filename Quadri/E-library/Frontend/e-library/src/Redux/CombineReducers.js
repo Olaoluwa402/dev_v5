@@ -14,6 +14,7 @@ import {
   getBooksReducer,
   updateBookReducer,
 } from "./Reducers/book";
+import { modalReducer } from "./Reducers/modal";
 
 export const reducers = combineReducers({
   createUser: createUserReducer,
@@ -27,4 +28,5 @@ export const reducers = combineReducers({
   getBook: getBookReducer,
   updateBook: updateBookReducer,
   deleteBook: deleteBookReducer,
+  modal:modalReducer
 });
