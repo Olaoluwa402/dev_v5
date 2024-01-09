@@ -8,7 +8,14 @@ import DafaultLayout from './components/DefaultLayout/Layout/Layout';
 const Router = () => {
     return (
         <Routes>
-            <Route path="/" element={<DafaultLayout><LoginRegister /></DafaultLayout>} />
+            <Route
+                path="/"
+                element={
+                    <DafaultLayout>
+                        <LoginRegister login="login" />
+                    </DafaultLayout>
+                }
+            />
             <Route
                 path="/expenses"
                 element={

@@ -13,6 +13,10 @@ const LoginRegister = ({ register, login }) => {
         loggedInUser: { error: loggedInError, user: loggedInUser, success: LogInSuccess, loading: logInLoading }
     } = useSelector((state) => state);
 
+    console.log(login, 'login');
+
+    const [loginPage, setLoginPage] = useState(false);
+
     //   const { error, success, user } = loginUser;
     //const navigate = useNavigate();
     const [value, setValue] = useState({
@@ -32,6 +36,9 @@ const LoginRegister = ({ register, login }) => {
     }
 
     useEffect(() => {
+        if (login) {
+            setLoginPage(true);
+        }
         if (success) {
             toast.success(`welcome${user.username}`);
         }
@@ -81,11 +88,11 @@ const LoginRegister = ({ register, login }) => {
                 </div>
                 <div className="flex w-full flex-col md:w-1/2">
                     <div className=" mx-auto flex flex-col justify-center px-6 pt-8 md:justify-start lg:w-[28rem]">
-                        <p className="text-center text-3xl font-bold md:text-left md:leading-tight">Create your free account</p>
+                        <p className="text-center text-3xl font-bold md:text-left md:leading-tight">{loginPage ? 'Login to your Account' : 'Create your free account'}</p>
 
                         <div className="flex flex-col items-stretch pt-3 md:pt-8">
                             <div className="flex flex-col pt-4">
-                                {register && (
+                                {!loginPage && (
                                     <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                         <input
                                             type="text"
@@ -139,7 +146,7 @@ const LoginRegister = ({ register, login }) => {
                                     </a>
                                 </label>
                             </div>
-                            {login ? (
+                            {loginPage ? (
                                 <div>
                                     {logInLoading ? (
                                         <Spinner />
@@ -169,7 +176,21 @@ const LoginRegister = ({ register, login }) => {
                                 </div>
                             )}
 
-                            {login ? <p>Don't have an account? Register</p> : <p>Already have an account? Login</p>}
+                            {loginPage ? (
+                                <p>
+                                    Don't have an account?{' '}
+                                    <span style={{ cursor: 'pointer' }} onClick={() => setLoginPage(false)}>
+                                        Register
+                                    </span>
+                                </p>
+                            ) : (
+                                <p>
+                                    Already have an account?{' '}
+                                    <span style={{ cursor: 'pointer' }} onClick={() => setLoginPage(true)}>
+                                        Login
+                                    </span>
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
