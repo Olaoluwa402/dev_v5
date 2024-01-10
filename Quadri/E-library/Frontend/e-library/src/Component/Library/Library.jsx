@@ -5,16 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBookAction, getBooksAction } from "../../Redux/Action/Book";
 import { openModalAction } from "../../Redux/Action/modal";
 import Modal from "../Modal/Modal";
+import Loader from "../Loader/Loader";
 
 const Library = () => {
   const dispatch = useDispatch();
   const { getBooks, modal } = useSelector((state) => state);
-  const { book } = getBooks;
-  const {records} = book
+  const { book,loading } = getBooks;
+  const { records, hasNextPage, hasPrevPage, nextPage, prevPage } = book;
   const { isModalOpen } = modal;
   useEffect(() => {
     dispatch(getBooksAction());
   }, []);
+
+  const getNextBooks = (page) => {
+    dispatch(getBooksAction(page));
+  };
 
   const openModalHandler = (bookId) => {
     dispatch(getBookAction({ bookId: bookId }));
@@ -144,14 +149,31 @@ const Library = () => {
           </div>
         </div>
       </div>
-      <div className=" absolute right-10 bottom-12 flex justify-between w-[100px] h-[40px] cursor-pointer">
-        <div className="w-[40px] h-[40px] text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full">
-          <FaAngleLeft className="text-2xl" />
-        </div>
-        <div className="w-[40px] h-[40px] text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full">
-          <FaAngleRight className="text-2xl" />
-        </div>
+      {loading ? (
+        <Loader/>
+      ) : (
+        <div className=" absolute right-10 bottom-12 flex justify-between w-[100px] h-[40px] cursor-pointer">
+        {hasPrevPage ? (
+          <div onClick={()=>getNextBooks(prevPage)} className="w-[40px] h-[40px] text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full">
+            <FaAngleLeft className="text-2xl" />
+          </div>
+        ) : (
+          ""
+        )}
+        
+        {hasNextPage ? (
+          <div
+            onClick={() => getNextBooks(nextPage)}
+            className="w-[40px] h-[40px] text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full"
+          >
+            <FaAngleRight className="text-2xl" />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
+      )}
+      
     </div>
   );
 };
