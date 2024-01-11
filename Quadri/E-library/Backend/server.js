@@ -10,6 +10,8 @@ import { dbConnect } from "./Config/db.js";
 import userRouter from "./Routes/user.js";
 import bookRouter from "./Routes/book.js";
 import categoryRouter from "./Routes/category.js";
+import shelfRouter from "./Routes/shelf.js";
+
 
 const app = express();
 
@@ -21,6 +23,7 @@ app.use(express.static("public"))
 app.use("/user", userRouter)
 app.use("/book", bookRouter)
 app.use("/category",categoryRouter)
+app.use("/shelf",shelfRouter)
 app.get("/", (req, res) => {
   res.status(httpStatus.OK).json({
     status: "success",
