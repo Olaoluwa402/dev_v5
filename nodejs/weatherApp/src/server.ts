@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //load environment variables fro .env file
 import dotenv from "dotenv";
 dotenv.config();
@@ -56,3 +57,6 @@ app.listen(port, () => {
     `Server is runnig on port ${port} in ${NODE_ENV} environment`.green
   );
 });
+=======
+import express from "express";
+>>>>>>> f7ef0af43db34e2a6bec86b3736b9ca2e056ab66
