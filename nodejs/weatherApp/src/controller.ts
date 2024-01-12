@@ -10,7 +10,11 @@ async function getUsers() {
     },
   });
 
-  await prisma.post.findFirst({ where: { title: "get me" } });
+  const post = await prisma.post.findFirst({ where: { title: "get me" } });
+
+  if (!post) {
+    console.log("No ");
+  }
 
   return users;
 }
