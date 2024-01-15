@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { constants } from '../../../config/constants';
 
-const API_URL = 'http://localhost:5000';
+console.log(constants, 'constants');
 
 // Register user
 export const registerService = async ({ email, password, username }) => {
@@ -12,7 +13,7 @@ export const registerService = async ({ email, password, username }) => {
         mode: 'cors'
     };
 
-    const { data } = await axios.post(`${API_URL}/users`, { email, password, username }, config);
+    const { data } = await axios.post(`${constants.backendBaseUrl}/users`, { email, password, username }, config);
 
     return data;
 };
@@ -26,7 +27,7 @@ export const loginService = async ({ email, password }) => {
         mode: 'cors'
     };
 
-    const { data } = await axios.post(`${API_URL}/users/login`, { email, password }, config);
+    const { data } = await axios.post(`${constants.backendBaseUrl}/users/login`, { email, password }, config);
 
     return data;
 };
