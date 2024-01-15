@@ -49,11 +49,7 @@ export const getBooks = async (req, res) => {
     const model = "Book";
     const query = {};
     const page = +req.query.page || 1;
-<<<<<<< HEAD
     const pageSize = +req.query.pageSize || 3;
-=======
-    const pageSize = +req.query.pageSize || 2;
->>>>>>> 8662a23c1e0e46298c70aaa98eb536d20a255be8
     const populateField = ["categoryId"];
 
     const data = await paginate(model, query, page, pageSize, populateField);
