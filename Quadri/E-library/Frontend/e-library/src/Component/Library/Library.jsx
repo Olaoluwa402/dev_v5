@@ -10,9 +10,11 @@ import Loader from "../Loader/Loader";
 const Library = () => {
   const dispatch = useDispatch();
   const { getBooks, modal } = useSelector((state) => state);
-  const { book,loading } = getBooks;
+  const { book,loading,isSearchActive, foundResult } = getBooks;
   const { records, hasNextPage, hasPrevPage, nextPage, prevPage } = book;
   const { isModalOpen } = modal;
+
+  const currentBook= isSearchActive ? foundResult : records
   useEffect(() => {
     dispatch(getBooksAction());
   }, []);
@@ -65,8 +67,8 @@ const Library = () => {
                   </thead>
                   <tbody>
                     {isModalOpen && <Modal />}
-                    {records && records.length > 0 ? (
-                      records.map((item) => {
+                    {currentBook && currentBook.length > 0 ? (
+                      currentBook.map((item) => {
                         return (
                           <tr
                             key={item._id}
@@ -111,7 +113,7 @@ const Library = () => {
 
                             <td className="p-3 pr-0 text-end">
                               <button
-                                onClick={openModalHandler}
+                                onClick={()=>openModalHandler(item._id)}
                                 className="ml-auto relative text-green-800 font-bold bg-light-dark hover:text-primary flex items-center h-[25px] w-[25px] text-base leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center"
                               >
                                 <span className="flex items-center justify-center p-0 m-0 leading-none shrink-0 bg-green-600 hover:bg-green-300 w-[25px] h-[25px] rounded-full">

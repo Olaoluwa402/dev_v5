@@ -11,7 +11,7 @@ const Dashboard = () => {
             <Sidebar/>
         </div>
           <Topbar/>
-        <main className='fixed top-20 w-[75%]  shadow-current right-14 h-[85vh]'>
+        <main className='fixed top-15 w-[75%]  shadow-current right-14 h-[85vh]'>
           <Outlet/>
         </main>
        </div>

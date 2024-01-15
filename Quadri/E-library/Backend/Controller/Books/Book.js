@@ -49,7 +49,7 @@ export const getBooks = async (req, res) => {
     const model = "Book";
     const query = {};
     const page = +req.query.page || 1;
-    const pageSize = +req.query.pageSize || 2;
+    const pageSize = +req.query.pageSize || 3;
     const populateField = ["categoryId"];
 
     const data = await paginate(model, query, page, pageSize, populateField);
@@ -68,8 +68,9 @@ export const getBooks = async (req, res) => {
 
 export const getBook = async (req, res) => {
   const bookId = req.params.id;
+  console.log(bookId,"idddddddd")
   try {
-    const book = await BookModel.findById({ _id: bookId }).populate("category");
+    const book = await BookModel.findById({ _id: bookId }).populate("categoryId");
     if (!book) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",
@@ -83,6 +84,7 @@ export const getBook = async (req, res) => {
       payload: book,
     });
   } catch (error) {
+   
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
       message: error.message,
