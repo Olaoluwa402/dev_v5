@@ -46,8 +46,25 @@ export const createBooks = async (req, res) => {
 
 export const getBooks = async (req, res) => {
   try {
+    const search = req.query.search;
     const model = "Book";
-    const query = {};
+    const conditionalSearch = search
+      ? {
+          $or: [
+            {
+              title: {
+                $regex: search,
+                $options: "i",
+              },
+            },
+            { author: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const query = {
+      ...conditionalSearch,
+    };
     const page = +req.query.page || 1;
     const pageSize = +req.query.pageSize || 3;
     const populateField = ["categoryId"];
@@ -68,9 +85,11 @@ export const getBooks = async (req, res) => {
 
 export const getBook = async (req, res) => {
   const bookId = req.params.id;
-  console.log(bookId,"idddddddd")
+  console.log(bookId, "idddddddd");
   try {
-    const book = await BookModel.findById({ _id: bookId }).populate("categoryId");
+    const book = await BookModel.findById({ _id: bookId }).populate(
+      "categoryId"
+    );
     if (!book) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",
@@ -84,7 +103,6 @@ export const getBook = async (req, res) => {
       payload: book,
     });
   } catch (error) {
-   
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
       message: error.message,
