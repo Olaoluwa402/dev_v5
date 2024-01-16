@@ -85,11 +85,17 @@ export const getBooks = async (req, res) => {
 
 export const getBook = async (req, res) => {
   const bookId = req.params.id;
+<<<<<<< HEAD
   console.log(bookId, "idddddddd");
   try {
     const book = await BookModel.findById({ _id: bookId }).populate(
       "categoryId"
     );
+=======
+  console.log(bookId,"idddddddd")
+  try {
+    const book = await BookModel.findById({ _id: bookId }).populate("categoryId");
+>>>>>>> faf818ca03bb0477e72fd8d631d988bca92ced04
     if (!book) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",
@@ -103,6 +109,7 @@ export const getBook = async (req, res) => {
       payload: book,
     });
   } catch (error) {
+   
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
       message: error.message,
