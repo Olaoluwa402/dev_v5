@@ -30,7 +30,7 @@ const Library = () => {
 
   return (
     // <div>
-    <div className=" relative flex flex-wrap mb-5">
+    <div className=" relative flex flex-wrap  mb-5">
       <div className="w-full max-w-full px-3 mb-6 mx-auto">
         <div className="relative flex-[1_auto] flex flex-col break-words min-w-0  rounded-[.95rem] bg-white shadow-2xl m-5">
           <div className="relative flex flex-col min-w-0 break-words  rounded-2xl border-stone-200 bg-light/30">
@@ -42,7 +42,7 @@ const Library = () => {
               </h3>
             </div>
 
-            <div className="flex-auto block py-8 pt-6 px-9">
+            <div className="flex-auto  block py-8 pt-6 px-9">
               <div className="overflow-x-auto">
                 <table className="w-full my-0 align-middle text-dark border-neutral-200">
                   <thead className="align-bottom shadow-2xl">
@@ -154,9 +154,9 @@ const Library = () => {
       {loading ? (
         <Loader/>
       ) : (
-        <div className=" absolute right-10 bottom-12 flex justify-between w-[100px] h-[40px] cursor-pointer">
+        <div className=" absolute right-10 bottom-9 lg:bottom-12 flex justify-between w-[100px] h-[40px] cursor-pointer">
         {hasPrevPage ? (
-          <div onClick={()=>getNextBooks(prevPage)} className="w-[40px] h-[40px] text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full">
+          <div onClick={()=>getNextBooks(prevPage)} className="w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full">
             <FaAngleLeft className="text-2xl" />
           </div>
         ) : (
@@ -166,7 +166,7 @@ const Library = () => {
         {hasNextPage ? (
           <div
             onClick={() => getNextBooks(nextPage)}
-            className="w-[40px] h-[40px] text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full"
+            className="w-[30px] h-[30px] lg:w-[40px] lg:h-[40px]  text-green-600 hover:bg-green-600 hover:text-white  flex justify-center items-center border border-green-800 rounded-full"
           >
             <FaAngleRight className="text-2xl" />
           </div>

@@ -15,7 +15,7 @@ import {
   updateBookReducer,
 } from "./Reducers/book";
 import { modalReducer } from "./Reducers/modal";
-import { addToShelfReducer } from "./Reducers";
+import { addToShelfReducer, getShelvesReducer } from "./Reducers";
 
 export const reducers = combineReducers({
   createUser: createUserReducer,
@@ -30,5 +30,6 @@ export const reducers = combineReducers({
   updateBook: updateBookReducer,
   deleteBook: deleteBookReducer,
   addToShelf: addToShelfReducer,
+  getShelves: getShelvesReducer,
   modal:modalReducer
 });

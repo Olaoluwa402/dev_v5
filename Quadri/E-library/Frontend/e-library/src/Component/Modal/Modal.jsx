@@ -96,7 +96,7 @@ const Modal = () => {
         </div>
         <div
           onClick={closeModalHandler}
-          className="absolute top-4 right-4 text-center font-bold text-red-700 w-[30px] h-[30px] rounded-full border-2 border-red-700 hover:bg-red-300 cursor-pointer"
+          className="absolute top-8 right-4 text-center font-bold text-red-700 w-[30px] h-[30px] rounded-full border-2 border-red-700 hover:bg-red-300 cursor-pointer"
         >
           X
         </div>
