@@ -38,22 +38,49 @@ export const addToShelf = async (req, res) => {
 };
 
 export const getShelfs = async (req, res) => {
-    const userId = req.user._id;
-  console.log(userId,"iddd")
+  const userId = req.user._id;
+  const search = req.query.search;
+  console.log(userId, "iddd");
 
   try {
-    const shelves = await shelfModel.find({user:userId}).populate([
+    const shelves = await shelfModel.find({ user: userId }).populate([
       { path: "book", model: "Book" },
       { path: "category", model: "Category" },
     ]);
     res.status(httpStatus.OK).json({
-        status: "success",
-        payload: shelves,
-    })
+      status: "success",
+      payload: shelves,
+    });
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({
+      status: "error",
+      payload: error.message,
+    });
+  }
+};
+
+export const deleteShelf = async (req, res) => {
+  const shelfId = req.params.id;
+
+  try {
+    const shelf = await shelfModel.findById({ _id: shelfId });
+    if (!shelf) {
+      res.status(httpStatus.BAD_REQUEST).json({
         status: "error",
-        payload: error.message,
+        payload: "Book does not exist",
       });
+      return;
+    }
+
+    await shelfModel.findByIdAndDelete({ _id: shelfId });
+    res.status(httpStatus.OK).json({
+      status: "success",
+      message: `Deleted Shelf with id ${shelfId}`,
+    });
+  } catch (error) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      status: "error",
+      payload: error.message,
+    });
   }
 };

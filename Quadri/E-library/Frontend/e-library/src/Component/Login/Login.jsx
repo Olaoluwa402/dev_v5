@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_USER_RESET } from "../../Redux/Constants";
+import {PiEyeSlashDuotone} from "react-icons/pi"
+import {LuEye} from "react-icons/lu"
 import Spinner from "../Spinner/Spinner";
 const Login = () => {
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ const Login = () => {
     password: "",
   };
   const [input, setInput] = useState(initialValue);
+  const [showPassword, setShowPassword]=useState("showPassword")
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -100,11 +103,11 @@ const Login = () => {
                   <div>
                     <div className="relative mt-2 w-full">
                       <input
-                        type="password"
+                        type={showPassword}
                         id="password"
                         name="password"
                         onChange={changeHandler}
-                        className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-green-600 focus:outline-none focus:ring-0"
+                        className="border-6  peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-green-600 focus:outline-none focus:ring-0"
                         placeholder=" "
                       />
                       <label
@@ -113,8 +116,20 @@ const Login = () => {
                       >
                         {" "}
                         Enter Your Password
+                        
                       </label>
+                      {showPassword === "password" ? (
+                        <div onClick={()=>setShowPassword("text")} className="absolute top-4 right-4 cursor-pointer">
+                        <PiEyeSlashDuotone className="text-2xl"/>
+                      </div>
+                      ): (
+                        <div onClick={()=>setShowPassword("password")} className="absolute top-4 right-4 cursor-pointer">
+                        <LuEye className="text-2xl"/>
+                      </div>
+                      )}
+                      
                     </div>
+                    
                   </div>
                   { loading ? (
                     <Spinner/>

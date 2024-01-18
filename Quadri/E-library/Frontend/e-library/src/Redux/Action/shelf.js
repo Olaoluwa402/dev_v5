@@ -58,7 +58,7 @@ export const addToShelfAction =
     }
   };
 
-export const getShelfAction = () => async (dispatch, state) => {
+export const getShelvesAction = () => async (dispatch, state) => {
   const {
     loginUser: { user },
   } = state();

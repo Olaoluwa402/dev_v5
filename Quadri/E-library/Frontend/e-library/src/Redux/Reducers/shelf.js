@@ -87,3 +87,15 @@ export const getShelvesReducer = (
       return state;
   }
 };
+
+
+export const deleteShelfReducer=(state={shelf:null, loading:false, success:true, error:null}, action)=>{
+    switch (action.type) {
+        case value:
+            
+            break;
+    
+        default:
+            break;
+    }
+}
