@@ -7,20 +7,20 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_USER_RESET } from "../../Redux/Constants";
-import {PiEyeSlashDuotone} from "react-icons/pi"
-import {LuEye} from "react-icons/lu"
+import { PiEyeSlashDuotone } from "react-icons/pi";
+import { LuEye } from "react-icons/lu";
 import Spinner from "../Spinner/Spinner";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loginUser } = useSelector((state) => state);
-  const { success, error, user,loading } = loginUser;
+  const { success, error, user, loading } = loginUser;
   const initialValue = {
     email: "",
     password: "",
   };
   const [input, setInput] = useState(initialValue);
-  const [showPassword, setShowPassword]=useState("showPassword")
+  const [showPassword, setShowPassword] = useState("password");
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -32,7 +32,7 @@ const Login = () => {
   };
 
   const userLoginHandler = () => {
-    dispatch(loginUserAction({ email:input.email, password:input.password }));
+    dispatch(loginUserAction({ email: input.email, password: input.password }));
   };
 
   useEffect(() => {
@@ -116,32 +116,35 @@ const Login = () => {
                       >
                         {" "}
                         Enter Your Password
-                        
                       </label>
                       {showPassword === "password" ? (
-                        <div onClick={()=>setShowPassword("text")} className="absolute top-4 right-4 cursor-pointer">
-                        <PiEyeSlashDuotone className="text-2xl"/>
-                      </div>
-                      ): (
-                        <div onClick={()=>setShowPassword("password")} className="absolute top-4 right-4 cursor-pointer">
-                        <LuEye className="text-2xl"/>
-                      </div>
+                        <div
+                          onClick={() => setShowPassword("text")}
+                          className="absolute top-4 right-4 cursor-pointer"
+                        >
+                          <PiEyeSlashDuotone className="text-2xl" />
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => setShowPassword("password")}
+                          className="absolute top-4 right-4 cursor-pointer"
+                        >
+                          <LuEye className="text-2xl" />
+                        </div>
                       )}
-                      
                     </div>
-                    
                   </div>
-                  { loading ? (
-                    <Spinner/>
+                  {loading ? (
+                    <Spinner />
                   ) : (
                     <button
-                    onClick={userLoginHandler}
-                    className="rounded-lg bg-green-600 hover:bg-green-300 py-3 font-bold text-white"
-                  >
-                    Login
-                  </button>
+                      onClick={userLoginHandler}
+                      className="rounded-lg bg-green-600 hover:bg-green-300 py-3 font-bold text-white"
+                    >
+                      Login
+                    </button>
                   )}
-                 
+
                   <p className="text-sm font-semibold font-inter">
                     Don't have an account?{" "}
                     <Link to="/register">
@@ -162,45 +165,3 @@ const Login = () => {
 };
 
 export default Login;
-
-{
-  /* <div className="w-10/12 mx-12 h-full py-4 flex justify-center items-center gap-6">
-        <div className="hidden md:flex flex-grow h-full gap-2">
-          <div className="basis-1/2 h-full flex gap-2 flex-col">
-            <div className="basis-1/2 rounded-md">
-              <img
-                src={Book}
-                alt=""
-                className="w-full h-[280px] rounded-md bg-cover"
-              />
-            </div>
-            <div className="basis-1/2 rounded-md">
-              <img
-                src={Book_2}
-                alt=""
-                className="bg-cover w-full h-[280px] rounded-md"
-              />
-            </div>
-          </div>
-          <div className="basis-1/2 h-full  gap-2 flex flex-col">
-            <div className="basis-1/2 rounded-md">
-              <img
-                src={Book_3}
-                alt=""
-                className="bg-cover w-full h-[280px] rounded-md"
-              />
-            </div>
-            <div className="basis-1/2 rounded-md">
-              <img
-                src={Book_4}
-                alt=""
-                className="bg-cover w-full h-[280px] rounded-md"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="w-[550px] h-[450px]">
-          
-        </div>
-      </div> */
-}

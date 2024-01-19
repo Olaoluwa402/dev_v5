@@ -1,17 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { GiBackForth } from "react-icons/gi";
 import ToolTips from "../ToolTips/ToolTips";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getShelvesAction } from "../../Redux/Action/shelf";
+import { deleteShelfAction, getShelvesAction } from "../../Redux/Action/shelf";
 import empty_shelf from "../Assets/Images/shelf.jpeg"
 import ColorfulSpinner from "../ColofulSpinner/ColorfulSpinner";
+import PopUp from "../PopUp/PopUp";
+import { openModalAction } from "../../Redux/Action/modal";
+import { DELETE_SHELF_RESET } from "../../Redux/Constants";
+import {toast} from "react-toastify"
 
 const Shelf = () => {
   const dispatch = useDispatch();
-  const { getShelves } = useSelector((state) => state);
+  const { getShelves,modal, deleteShelf } = useSelector((state) => state);
   const { shelves, loading } = getShelves;
+  const {success, error} = deleteShelf
+  const {isModalOpen}=  modal
 
+  const [selectedBookId, setSelectedBookId] = useState(null)
+
+  // const deleteShelfHandler = (BookId) => {
+  //   dispatch(deleteShelfAction(BookId));
+  //   dispatch(getShelvesAction());
+    
+  // };
+
+  useEffect(() => {
+    if (success) {
+      toast.success("Book Removed from Shelf");
+      dispatch({ type: DELETE_SHELF_RESET });
+    }
+
+    if (error) {
+      toast.warn(`${error}`);
+      setTimeout(() => {
+        dispatch({ type: DELETE_SHELF_RESET });
+      }, 3000);
+    }
+  }, [success, error]);
+
+  const openModalHandler = (BookId) => {
+    setSelectedBookId(BookId)
+    dispatch(openModalAction());
+  };
   useEffect(() => {
     dispatch(getShelvesAction());
   }, []);
@@ -57,6 +89,7 @@ const Shelf = () => {
               ></th>
             </tr>
           </thead>
+          {isModalOpen && <PopUp BookId={selectedBookId}/>}
           {shelves && shelves.length > 0 ? (
             shelves.map((item) => {
               return (
@@ -95,7 +128,7 @@ const Shelf = () => {
                     </td>
                     <td className="px-6 py-4">
                       <ToolTips text={"return to library"}>
-                        <div className="flex justify-end cursor-pointer">
+                        <div onClick={()=>openModalHandler(item._id)} className="flex justify-end cursor-pointer">
                           <GiBackForth className="text-black text-3xl" />
                         </div>
                       </ToolTips>

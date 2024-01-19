@@ -3,6 +3,10 @@ import {
   CREATE_SHELF_REQUEST,
   CREATE_SHELF_RESET,
   CREATE_SHELF_SUCCESS,
+  DELETE_SHELF_ERROR,
+  DELETE_SHELF_REQUEST,
+  DELETE_SHELF_RESET,
+  DELETE_SHELF_SUCCESS,
   GET_SHELVES_ERROR,
   GET_SHELVES_REQUEST,
   GET_SHELVES_RESET,
@@ -88,14 +92,42 @@ export const getShelvesReducer = (
   }
 };
 
+export const deleteShelfReducer = (
+  state = { shelf: null, loading: false, success: true, error: null },
+  action
+) => {
+  switch (action.type) {
+    case DELETE_SHELF_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
 
-export const deleteShelfReducer=(state={shelf:null, loading:false, success:true, error:null}, action)=>{
-    switch (action.type) {
-        case value:
-            
-            break;
-    
-        default:
-            break;
-    }
-}
+    case DELETE_SHELF_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        shelf: action.payload,
+      };
+
+    case DELETE_SHELF_RESET:
+      return {
+        loading: false,
+        success: false,
+        error: null,
+        shelf: null,
+      };
+
+    case DELETE_SHELF_ERROR:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        error: action.error,
+      };
+
+    default:
+      return state;
+  }
+};
