@@ -9,3 +9,4 @@ export const jwtToken = (id, email) => {
     expiresIn: JWT_EXPIRY,
   });
 };
+  
