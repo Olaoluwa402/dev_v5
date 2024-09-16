@@ -7,11 +7,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_USER_RESET } from "../../Redux/Constants";
+import Spinner from "../Spinner/Spinner";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loginUser } = useSelector((state) => state);
-  const { success, error, user } = loginUser;
+  const { success, error, user,loading } = loginUser;
   const initialValue = {
     email: "",
     password: "",
@@ -115,13 +116,17 @@ const Login = () => {
                       </label>
                     </div>
                   </div>
-
-                  <button
+                  { loading ? (
+                    <Spinner/>
+                  ) : (
+                    <button
                     onClick={userLoginHandler}
                     className="rounded-lg bg-green-600 hover:bg-green-300 py-3 font-bold text-white"
                   >
                     Login
                   </button>
+                  )}
+                 
                   <p className="text-sm font-semibold font-inter">
                     Don't have an account?{" "}
                     <Link to="/register">

@@ -1,9 +1,18 @@
 import BookModel from "../../Models/Book.js";
 import httpStatus from "http-status";
+import { paginate } from "../../Utility/Pagination.js";
 
 export const createBooks = async (req, res) => {
-  const { title, author, isbn, publicationYear, In_Stock,coverImage,categoryId } = req.body;
-    
+  const {
+    title,
+    author,
+    isbn,
+    publicationYear,
+    In_Stock,
+    coverImage,
+    categoryId,
+  } = req.body;
+
   try {
     const titleExist = await BookModel.findOne({ title: title, isbn: isbn });
     if (titleExist) {
@@ -21,8 +30,7 @@ export const createBooks = async (req, res) => {
       publicationYear,
       In_Stock,
       coverImage,
-      categoryId
-
+      categoryId,
     });
     res.status(httpStatus.OK).json({
       status: "success",
@@ -38,10 +46,17 @@ export const createBooks = async (req, res) => {
 
 export const getBooks = async (req, res) => {
   try {
-    const books = await BookModel.find({}).populate({path:"categoryId",model:"Category"});
+    const model = "Book";
+    const query = {};
+    const page = +req.query.page || 1;
+    const pageSize = +req.query.pageSize || 3;
+    const populateField = ["categoryId"];
+
+    const data = await paginate(model, query, page, pageSize, populateField);
+    // const books = await BookModel.find({}).populate({path:"categoryId",model:"Category"});
     res.status(httpStatus.OK).json({
       status: "Success",
-      payload: books,
+      payload: data,
     });
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({
@@ -53,8 +68,9 @@ export const getBooks = async (req, res) => {
 
 export const getBook = async (req, res) => {
   const bookId = req.params.id;
+  console.log(bookId,"idddddddd")
   try {
-    const book = await BookModel.findById({ _id: bookId }).populate("category");
+    const book = await BookModel.findById({ _id: bookId }).populate("categoryId");
     if (!book) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",
@@ -68,6 +84,7 @@ export const getBook = async (req, res) => {
       payload: book,
     });
   } catch (error) {
+   
     res.status(httpStatus.BAD_REQUEST).json({
       status: "error",
       message: error.message,
@@ -106,11 +123,10 @@ export const updateBook = async (req, res) => {
   }
 };
 
-
-export const deleteBook = async(req, res)=>{
-    const bookId=req.params.id;
-    try {
-        const book = await BookModel.findById({ _id: bookId });
+export const deleteBook = async (req, res) => {
+  const bookId = req.params.id;
+  try {
+    const book = await BookModel.findById({ _id: bookId });
     if (!book) {
       res.status(httpStatus.NOT_FOUND).json({
         status: "error",
@@ -118,16 +134,15 @@ export const deleteBook = async(req, res)=>{
       });
       return;
     }
-        await BookModel.findByIdAndDelete({_id:bookId})
-        res.status(httpStatus.OK).json({
-            status:"success" ,
-            payload:`Deleted ${book}`
-            
-        })
-    } catch (error) {
-        res.status(httpStatus.BAD_REQUEST).json({
-            status: "error",
-            message: error.message,
-          });
-    }
-}
+    await BookModel.findByIdAndDelete({ _id: bookId });
+    res.status(httpStatus.OK).json({
+      status: "success",
+      payload: `Deleted ${book}`,
+    });
+  } catch (error) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};

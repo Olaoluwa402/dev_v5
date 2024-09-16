@@ -1,6 +1,7 @@
-import { combineReducers } from "redux";
-import { registerUserReducer } from "./reducers/user/user";
+import { combineReducers } from 'redux';
+import { registerUserReducer, loginUserReducer } from './reducers/user/user';
 
 export const combined = combineReducers({
-  createdUser: registerUserReducer,
+    createdUser: registerUserReducer,
+    loggedInUser: loginUserReducer
 });
