@@ -5,7 +5,7 @@ import {
   GET_BOOK_ERROR,
   GET_BOOK_REQUEST,
   GET_BOOK_SUCCESS,
-  SEARCH_BOOK,
+ 
 } from "../Constants";
 import axios from "axios";
 import { Logout } from "./User";
@@ -13,7 +13,7 @@ import { Logout } from "./User";
 const url = "http://localhost:3000";
 
 export const getBooksAction =
-  (page = 1) =>
+  (page = 1, search="") =>
   async (dispatch, state) => {
     const {
       loginUser: { user },
@@ -31,7 +31,7 @@ export const getBooksAction =
       });
 
       const numPage = Number(page) || 1;
-      const { data } = await axios.get(`${url}/book?page=${numPage}`, config);
+      const { data } = await axios.get(`${url}/book?page=${numPage}&search=${search}`, config);
       console.log(data, "dataBook");
       dispatch({
         type: GET_BOOKS_SUCCESS,
@@ -96,9 +96,9 @@ export const getBookAction =
   };
 
 
-  export const searchActions=(changeValue)=>async(dispatch, state)=>{
-      dispatch({
-        type:SEARCH_BOOK,
-        payload: changeValue
-      })
-  }
+  // export const searchActions=(changeValue)=>async(dispatch, state)=>{
+  //     dispatch({
+  //       type:SEARCH_BOOK,
+  //       payload: changeValue
+  //     })
+  // }

@@ -6,6 +6,7 @@ import {BsBookshelf} from "react-icons/bs"
 import {MdManageAccounts} from "react-icons/md"
 import {PiBooks} from "react-icons/pi"
 import {TbLogout} from "react-icons/tb"
+import {CgMenuGridR} from "react-icons/cg"
 import { Link } from 'react-router-dom'
 import { Logout } from '../../../Redux/Action/User'
 import { useDispatch } from 'react-redux'
@@ -17,7 +18,9 @@ const Sidebar = () => {
     dispatch(Logout())
   }
   return (
-    <div className='w-full'>
+    <>
+    <div className='relative w-full hidden lg:block'>
+      
        <div className="flex justify-start items-center gap-2 pb-4 pt-4 ml-2">
         <img src={Logo} alt=""  className="w-[40px] h-[40px]"/>
         <h2 className="font-inter font-bold text-xl">
@@ -60,6 +63,10 @@ const Sidebar = () => {
       </div>
 
     </div>
+    <div className='lg:hidden absolute top-4 right-4 cursor-pointer'>
+    <CgMenuGridR className='text-3xl'/>
+  </div>
+  </>
   //   <div
   //   id="view"
   //   className="h-full w-screen flex flex-row"

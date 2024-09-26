@@ -42,6 +42,10 @@ export const loginUserAction = (user) => async (dispatch, state) => {
         : error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
+
+    if (message.includes("jwt")) {
+      dispatch(Logout());
+    }
     dispatch({
       type: LOGIN_USER_ERROR,
       payload: message,
@@ -72,7 +76,7 @@ export const registerUserAction = (info) => async (dispatch, state) => {
     const { data } = await axios.post(
       `${url}/user`,
       {
-        ...info
+        ...info,
       },
       config
     );

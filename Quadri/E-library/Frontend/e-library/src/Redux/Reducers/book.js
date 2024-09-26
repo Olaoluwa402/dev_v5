@@ -15,7 +15,6 @@ import {
   GET_BOOK_REQUEST,
   GET_BOOK_RESET,
   GET_BOOK_SUCCESS,
-  SEARCH_BOOK,
   UPDATE_BOOK_ERROR,
   UPDATE_BOOK_REQUEST,
   UPDATE_BOOK_RESET,
@@ -105,8 +104,8 @@ export const getBooksReducer = (
     loading: false,
     success: false,
     error: null,
-    isSearchActive: false,
-    foundResult: [],
+    // isSearchActive: false,
+    // foundResult: [],
   },
   action
 ) => {
@@ -125,21 +124,21 @@ export const getBooksReducer = (
         book: action.payload,
       };
 
-    case SEARCH_BOOK: {
-      console.log(action.payload, "payloaddd");
-      return {
-        ...state,
-        loading: false,
-        isSearchActive: action.payload.length > 0 ? action.payload : false,
-        foundResult: state.book.records.filter((item) => {
-          return (
-            item.title.toLowerCase().search(action.payload.toLowerCase()) !==
-              -1 ||
-            item.author.toLowerCase().search(action.payload.toLowerCase()) !== -1
-          );
-        }),
-      };
-    }
+    // case SEARCH_BOOK: {
+    //   console.log(action.payload, "payloaddd");
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     isSearchActive: action.payload.length > 0 ? action.payload : false,
+    //     foundResult: state.book.records.filter((item) => {
+    //       return (
+    //         item.title.toLowerCase().search(action.payload.toLowerCase()) !==
+    //           -1 ||
+    //         item.author.toLowerCase().search(action.payload.toLowerCase()) !== -1
+    //       );
+    //     }),
+    //   };
+    // }
     case GET_BOOKS_RESET:
       return {
         loading: false,

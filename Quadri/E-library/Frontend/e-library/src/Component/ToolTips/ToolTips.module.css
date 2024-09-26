@@ -1,0 +1,18 @@
+.tooltip {
+    display: none;
+    width: 120px;
+    padding: 4px;
+    background-color: green;
+    border-radius: 10px;
+    color: white;
+    position: absolute;
+    right: 25px;
+    top: -10px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .tooltipContainer:hover .tooltip {
+    display: block;
+  }
+  
